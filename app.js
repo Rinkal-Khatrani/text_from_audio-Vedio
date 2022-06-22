@@ -202,57 +202,55 @@ app.post("/audioText", (req, res) => {
     } else {
       console.log("filePathaudio>>>", req.file.path);
       const outputFileName = Date.now() + "outputaudio.wav";
-      exec(
-        `ffmpeg -i ${req.file.path} -vn -ar 44100 -ac 2 -ab 192 -f wav ${outputFileName}`,
-        (err, stderr, stdout) => {
-          if (err) {
-            console.log("error in conversion", err);
-          } else {
-            let audioConfig2 = sdk.AudioConfig.fromWavFileInput(
-              fs.readFileSync(outputFileName),
-              "outputaudio.wav"
-            );
-            let speechRecognizer2 = new sdk.SpeechRecognizer(
-              speechConfig,
-              audioConfig2
-            );
-
-            speechRecognizer2.recognizeOnceAsync((result) => {
-              switch (result.reason) {
-                case sdk.ResultReason.RecognizedSpeech:
-                  console.log(`RECOGNIZED: Text=${result.text}`);
-                  res.send(result.text);
-                  break;
-                case sdk.ResultReason.NoMatch:
-                  console.log("NOMATCH: Speech could not be recognized.");
-
-                  break;
-                case sdk.ResultReason.Canceled:
-                  const cancellation =
-                    sdk.CancellationDetails.fromResult(result);
-                  console.log(`CANCELED: Reason=${cancellation.reason}`);
-
-                  if (cancellation.reason == sdk.CancellationReason.Error) {
-                    console.log(
-                      `CANCELED: ErrorCode=${cancellation.ErrorCode}`
-                    );
-                    console.log(
-                      `CANCELED: ErrorDetails=${cancellation.errorDetails}`
-                    );
-                    console.log(
-                      "CANCELED: Did you set the speech resource key and region values?"
-                    );
-                  }
-                  break;
-              }
-              speechRecognizer2.close();
-            });
-            // res.download(outputFileName, () => {
-            //   console.log("file dowloaded");
-            // });
-          }
-        }
+      let audioConfig2 = sdk.AudioConfig.fromWavFileInput(
+        fs.readFileSync(req.file.path),
+        "outputaudio.wav"
       );
+      let speechRecognizer2 = new sdk.SpeechRecognizer(
+        speechConfig,
+        audioConfig2
+      );
+
+      speechRecognizer2.recognizeOnceAsync((result) => {
+        switch (result.reason) {
+          case sdk.ResultReason.RecognizedSpeech:
+            console.log(`RECOGNIZED: Text=${result.text}`);
+            res.send(result.text);
+            break;
+          case sdk.ResultReason.NoMatch:
+            console.log("NOMATCH: Speech could not be recognized.");
+
+            break;
+          case sdk.ResultReason.Canceled:
+            const cancellation = sdk.CancellationDetails.fromResult(result);
+            console.log(`CANCELED: Reason=${cancellation.reason}`);
+
+            if (cancellation.reason == sdk.CancellationReason.Error) {
+              console.log(`CANCELED: ErrorCode=${cancellation.ErrorCode}`);
+              console.log(
+                `CANCELED: ErrorDetails=${cancellation.errorDetails}`
+              );
+              console.log(
+                "CANCELED: Did you set the speech resource key and region values?"
+              );
+            }
+            break;
+        }
+        speechRecognizer2.close();
+      });
+      // exec(
+      //   `ffmpeg -i ${req.file.path} -vn -ar 44100 -ac 2 -ab 192 -f wav ${outputFileName}`,
+      //   (err, stderr, stdout) => {
+      //     if (err) {
+      //       console.log("error in conversion", err);
+      //     } else {
+
+      //       // res.download(outputFileName, () => {
+      //       //   console.log("file dowloaded");
+      //       // });
+      //     }
+      //   }
+      // );
     }
   });
 });
