@@ -16,7 +16,7 @@ require("dotenv").config({ path: "./config.env" });
 // const ffmpeg = require("ffmpeg");
 
 app.use(express.static("public/uploads"));
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 const path = require("path");
 
