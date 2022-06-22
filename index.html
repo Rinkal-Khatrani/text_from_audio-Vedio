@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFMPEG video to wav</title>
+</head>
+<body>
+   <form action="/videotowav" method="post" id="1" enctype="multipart/form-data">
+       <input type="file" name="file" accept="video/mp4,video/x-m4v,video/*" required id="">
+       <input type="submit" id="btn" value="Convert to Audio">
+   </form> 
+   <form action="/audioText" method="post" id="2" enctype="multipart/form-data">
+    <!-- <div style="display: flex;">
+          <input type="radio" id="mic" name="option" class="radio" value="mic" checked="true">
+          <label for="mic">Microphone</label>
+        <input type="radio" id="file" name="option" class="radio" value="audio">
+          <label for="audio">From audio file</label><br>
+      </div> -->
+    <input type="file" name="fileaudio" accept="audio/*" required id="">
+    <input type="submit" value="Convert to Audio to text">
+   
+</form>
+</body>
+<script>
+    
+    $.get("/videotowav", function(data){
+        console.log("data from backend>>",data);
+    })
+
+</script>
+</html>
