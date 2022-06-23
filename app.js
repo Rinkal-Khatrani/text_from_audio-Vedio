@@ -108,7 +108,7 @@ function convert(input, output, callback) {
       callback(null);
     })
     .on("error", function (err) {
-      console.log("error: ", e.code, e.msg);
+      console.log("error: ", err.code, err.msg);
       callback(err);
     })
     .run();
