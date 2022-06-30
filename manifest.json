@@ -1,0 +1,9 @@
+{
+  "name": "Persistence of Memory",
+  "short_name": "Persistence",
+  "start_url": "/",
+  "theme_color": "#e0ebeb",
+  "background_color": "#e0ebeb",
+  "display": "standalone",
+  "orientation": "portrait"
+}
